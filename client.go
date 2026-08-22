@@ -1,6 +1,8 @@
 package velora
 
 import (
+	"errors"
+	"net/http"
 	"net/url"
 
 	"github.com/auroradevllc/apiclient"
@@ -13,7 +15,10 @@ type Client interface {
 	Stream(username string) (*Stream, error)
 }
 
-var _ Client = (*client)(nil)
+var (
+	_           Client = (*client)(nil)
+	ErrNotFound        = errors.New("resource not found")
+)
 
 type client struct {
 	token string
@@ -66,5 +71,16 @@ func (c *client) sendRequest(path string, body any, out any) (*apiclient.Respons
 		return nil, err
 	}
 
-	return req.Send()
+	res, err := req.Send()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode == http.StatusNotFound {
+		defer res.Close()
+		return nil, ErrNotFound
+	}
+
+	return res, err
 }
