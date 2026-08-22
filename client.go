@@ -10,6 +10,10 @@ import (
 
 const veloraBase = "https://api.velora.tv"
 
+func New() Client {
+	return &client{}
+}
+
 type Client interface {
 	User(username string) (*User, error)
 	Stream(username string) (*Stream, error)
