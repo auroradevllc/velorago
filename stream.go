@@ -46,3 +46,10 @@ type Category struct {
 	Slug string `json:"slug"`
 	Name string `json:"name"`
 }
+
+type ListStream struct {
+	Stream
+
+	Tags      []string `json:"tags"`
+	Languages []string `json:"languages"`
+}

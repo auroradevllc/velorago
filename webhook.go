@@ -6,15 +6,23 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/hex"
+	"errors"
+	"fmt"
 	"hash"
 	"strings"
 )
 
-func VerifySignature(body, expected, secret string) bool {
+var (
+	ErrInvalidHeader    = errors.New("invalid expected header, should match sha256=SIGNATURE")
+	ErrInvalidHasher    = errors.New("unsupported hashing algorithm")
+	ErrInvalidSignature = errors.New("invalid signature")
+)
+
+func VerifySignature(body, expected, secret string) error {
 	splitIdx := strings.Index(expected, "=")
 
 	if splitIdx == -1 {
-		return false
+		return ErrInvalidHeader
 	}
 
 	hasher := expected[0:splitIdx]
@@ -25,19 +33,23 @@ func VerifySignature(body, expected, secret string) bool {
 	newFn := NewHasher(hasher)
 
 	if newFn == nil {
-		return false
+		return fmt.Errorf("%v: %s", ErrInvalidHasher, hasher)
 	}
 
 	provided, err := hex.DecodeString(expected)
 
 	if err != nil {
-		return false
+		return err
 	}
 
 	mac := hmac.New(newFn, []byte(secret))
 	mac.Write([]byte(body))
 
-	return hmac.Equal(provided, mac.Sum(nil))
+	if !hmac.Equal(provided, mac.Sum(nil)) {
+		return ErrInvalidSignature
+	}
+
+	return nil
 }
 
 func NewHasher(hasher string) func() hash.Hash {
