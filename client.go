@@ -15,8 +15,13 @@ func New() Client {
 }
 
 type Client interface {
+	Stream(username string) (*UserStream, error)
+	LiveStreams() ([]ListStream, error)
+	FeaturedStreams() ([]ListStream, error)
+	TopStreams() ([]ListStream, error)
+	GrowingStreams() ([]ListStream, error)
+	Categories() ([]Category, error)
 	User(username string) (*User, error)
-	Stream(username string) (*Stream, error)
 }
 
 var (
@@ -28,8 +33,10 @@ type client struct {
 	token string
 }
 
-func (c *client) Stream(username string) (*Stream, error) {
-	var stream Stream
+// Stream retrieves a stream for a user
+// Endpoint: /api/streams/user/<username>
+func (c *client) Stream(username string) (*UserStream, error) {
+	var stream UserStream
 
 	if err := c.sendRequestJSON("/api/streams/user/"+url.PathEscape(username), nil, &stream); err != nil {
 		return nil, err
@@ -38,6 +45,64 @@ func (c *client) Stream(username string) (*Stream, error) {
 	return &stream, nil
 }
 
+// LiveStreams retrieves all streams that are live
+// Endpoint: /api/streams/live
+func (c *client) LiveStreams() ([]ListStream, error) {
+	var res ListStreamResponse
+
+	if err := c.sendRequestJSON("/api/streams/live", nil, &res); err != nil {
+		return nil, err
+	}
+
+	return res.Streams, nil
+}
+
+// FeaturedStreams retrieves all featured streams
+// Endpoint: /api/streams/featured
+func (c *client) FeaturedStreams() ([]ListStream, error) {
+	var res ListStreamResponse
+
+	if err := c.sendRequestJSON("/api/streams/featured", nil, &res); err != nil {
+		return nil, err
+	}
+
+	return res.Streams, nil
+}
+
+// TopStreams retrieves the top streams
+func (c *client) TopStreams() ([]ListStream, error) {
+	var res ListStreamResponse
+
+	if err := c.sendRequestJSON("/api/streams/top", nil, &res); err != nil {
+		return nil, err
+	}
+
+	return res.Streams, nil
+}
+
+// GrowingStreams returns the "growing" stream category
+func (c *client) GrowingStreams() ([]ListStream, error) {
+	var res ListStreamResponse
+
+	if err := c.sendRequestJSON("/api/streams/growing", nil, &res); err != nil {
+		return nil, err
+	}
+
+	return res.Streams, nil
+}
+
+// Categories retrieves all known categories on the platform
+func (c *client) Categories() ([]Category, error) {
+	var categories []Category
+
+	if err := c.sendRequestJSON("/api/categories", nil, &categories); err != nil {
+		return nil, err
+	}
+
+	return categories, nil
+}
+
+// User retrieves user information for a username
 func (c *client) User(username string) (*User, error) {
 	var user User
 

@@ -8,6 +8,7 @@ import (
 )
 
 func TestVerifySignature(t *testing.T) {
+	// Note: This implementation works, however it seems Velora's server side implementation does not
 	body := `{
   "id": "evt_abc123",
   "type": "stream.online",

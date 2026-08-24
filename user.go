@@ -25,7 +25,7 @@ type User struct {
 	PronounsShort     string            `json:"pronounsShort"`
 	PronounsInChat    bool              `json:"pronounsInChat"`
 	StreamTags        []string          `json:"streamTags"`
-	StreamInfo        *Stream           `json:"streamInfo"`
+	StreamInfo        *UserStream       `json:"streamInfo"`
 	IsLive            bool              `json:"isLive"`
 	AccentColor       string            `json:"accentColor"`
 	AllowEmbed        bool              `json:"allowEmbed"`
@@ -41,21 +41,21 @@ type User struct {
 
 type ProfileTheme struct {
 	AccentColor                     *string `json:"accentColor"`
-	DerivedAccentColor              string  `json:"derivedAccentColor"`
-	TextureKey                      string  `json:"textureKey"`
+	DerivedAccentColor              *string `json:"derivedAccentColor"`
+	TextureKey                      *string `json:"textureKey"`
 	TextureIntensity                int     `json:"textureIntensity"`
 	BackgroundEnabled               bool    `json:"backgroundEnabled"`
 	CommunityLabelSingular          string  `json:"communityLabelSingular"`
 	CommunityLabelPlural            string  `json:"communityLabelPlural"`
-	CommunityLabelSingularCustom    string  `json:"communityLabelSingularCustom"`
+	CommunityLabelSingularCustom    *string `json:"communityLabelSingularCustom"`
 	CommunityLabelPluralCustom      *string `json:"communityLabelPluralCustom"`
 	SubscriberLabelSingular         string  `json:"subscriberLabelSingular"`
 	SubscriberLabelPlural           string  `json:"subscriberLabelPlural"`
-	SubscriberLabelSingularCustom   string  `json:"subscriberLabelSingularCustom"`
+	SubscriberLabelSingularCustom   *string `json:"subscriberLabelSingularCustom"`
 	SubscriberLabelPluralCustom     *string `json:"subscriberLabelPluralCustom"`
-	DisplayFontFamily               string  `json:"displayFontFamily"`
-	DisplayFontVariant              string  `json:"displayFontVariant"`
-	DisplayFontHref                 string  `json:"displayFontHref"`
+	DisplayFontFamily               *string `json:"displayFontFamily"`
+	DisplayFontVariant              *string `json:"displayFontVariant"`
+	DisplayFontHref                 *string `json:"displayFontHref"`
 	DisplayFontSizeDelta            int     `json:"displayFontSizeDelta"`
 	ChannelPointsNameSingular       string  `json:"channelPointsNameSingular"`
 	ChannelPointsNamePlural         string  `json:"channelPointsNamePlural"`
@@ -74,14 +74,14 @@ type ProfileLink struct {
 }
 
 type ProfileFeatured struct {
-	ChannelID   string          `json:"channelId"`
-	Headline    string          `json:"headline"`
-	Tagline     string          `json:"tagline"`
-	AccentColor *string         `json:"accentColor"`
-	Stream      *FeaturedStream `json:"stream"`
+	ChannelID   string                 `json:"channelId"`
+	Headline    string                 `json:"headline"`
+	Tagline     string                 `json:"tagline"`
+	AccentColor *string                `json:"accentColor"`
+	Stream      *ProfileFeaturedStream `json:"stream"`
 }
 
-type FeaturedStream struct {
+type ProfileFeaturedStream struct {
 	ID                   string `json:"id"`
 	Username             string `json:"username"`
 	DisplayName          string `json:"displayName"`

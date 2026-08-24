@@ -18,6 +18,8 @@ var (
 	ErrInvalidSignature = errors.New("invalid signature")
 )
 
+// VerifySignature is a standard hmac w/ sha1/256/384/512 implementation, parsed off the prefix
+// This is used in standard websub and other implementations
 func VerifySignature(body, expected, secret string) error {
 	splitIdx := strings.Index(expected, "=")
 
