@@ -58,8 +58,13 @@ type Category struct {
 	Streamers        int    `json:"streamers"`
 }
 
+type Pagination struct {
+	Cursor string `json:"cursor"`
+}
+
 type ListStreamResponse struct {
-	Streams []ListStream `json:"streams"`
+	Streams    []ListStream `json:"streams"`
+	Pagination *Pagination  `json:"pagination"`
 }
 
 // ListStream is a response type for the listing endpoints, which return different structures
