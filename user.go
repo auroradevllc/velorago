@@ -56,7 +56,7 @@ type ProfileTheme struct {
 	DisplayFontFamily               *string `json:"displayFontFamily"`
 	DisplayFontVariant              *string `json:"displayFontVariant"`
 	DisplayFontHref                 *string `json:"displayFontHref"`
-	DisplayFontSizeDelta            int     `json:"displayFontSizeDelta"`
+	DisplayFontSizeDelta            float32 `json:"displayFontSizeDelta"`
 	ChannelPointsNameSingular       string  `json:"channelPointsNameSingular"`
 	ChannelPointsNamePlural         string  `json:"channelPointsNamePlural"`
 	ChannelPointsNameSingularCustom *string `json:"channelPointsNameSingularCustom"`
